@@ -1,8 +1,13 @@
 //require express
 const express = require('express');
+//require db
+const connectDB = require('./config/db')
 
 //init express
 const app = express();
+
+//connect db
+connectDB();
 
 // use express get method, pass in the route and the response
 app.get('/', (req, res) => {
