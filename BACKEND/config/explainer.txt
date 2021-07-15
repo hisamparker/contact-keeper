@@ -1,0 +1,6 @@
+all global vars will go in the default.json file (like our database) this is part of the npm config package: https://docs.npmjs.com/cli/v7/commands/npm-config
+Description:
+- npm gets its config settings from the command line, environment variables, npmrc files, and in some cases, the package.json file.
+- The npm config command can be used to update and edit the contents of the user and global npmrc files.
+
+Basically if you create a default.json, you can access everything that you put in there anywhere in the app
