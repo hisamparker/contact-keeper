@@ -19,11 +19,11 @@ const ContactSchema = new Schema({
 	type: {
 		type: String,
 		default: 'personal'
-	},
-	date: {
-		type: Date,
-		default: Date.now
 	}
-});
+},
+{
+    timestamps: { createdAt: `created_at`, updatedAt: `updated_at` }
+}
+);
 
 module.exports = mongoose.model('contact', ContactSchema);
