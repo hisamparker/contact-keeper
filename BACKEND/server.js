@@ -9,7 +9,7 @@ const app = express();
 //connect db
 connectDB();
 
-//init middleware
+// init middleware
 // now we can accept json data, yay
 // extended = false means that the value can be wither a string or an array. if true, it can be anything. 
 app.use(express.json({ extended: false }))
