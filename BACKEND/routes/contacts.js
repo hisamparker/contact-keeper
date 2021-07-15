@@ -31,7 +31,7 @@ router.put('/:id', (req, res) => {
 // @route       DELETE api/contacts/:id (we need to id which contact is getting deleted)
 // @desc        delete contact
 // @access      private 
-router.delet('/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
     res.send(`DESTROY a contact`)
 })
 
