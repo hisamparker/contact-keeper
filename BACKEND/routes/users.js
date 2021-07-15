@@ -4,7 +4,10 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
 // bring in bcrypt
 const bcrypt = require('bcryptjs');
+// bring in jason web token, see notes below
+const jwt = require('jsonwebtoken')
 
+const config = require('config')
 const User = require('../models/User')
 
 // define post request for posting data to server 
@@ -44,8 +47,37 @@ router.post('/', [
                 newUser.password = await bcrypt.hash(password, salt)
                 // now we save user in db
                 await newUser.save();
+                // after we register the user, we want to log them in 
+                // so we respond to them with a 'payload' a JWT https://jwt.io/
+                // a JWT has 3 parts xxxxx.yyyyy.zzzzz
+                // 1.the header (the algorithm and token type (jwt)) 
+                // 2 the payload contains something called claims, claims are statements about an entity (user) and additional data a claim could be exp (expiration), 
+                // example {
+                //     "sub": "1234567890",
+                //     "name": "John Doe",
+                //     "admin": true
+                // }
+                // 3.the signature: take the encoded header, the encoded payload, a secret, the algorithm specified in the header, and sign that. oof!
+                // The signature is used to verify the message wasn't changed along the way, and, in the case of tokens signed with a private key, it can also verify that the sender of the JWT is who it says it is.
+                
+                // specify the payload
+                const payload = {
+                    user: {
+                        id: newUser.id
+                    }
+                }
+                //sign it! passs in payload, secret from our config file, and options, and error!
+                jwt.sign(payload, config.get('jwtSecret'), {
+                    // how long they stay logged in 
+                    expiresIn: 360000
+                    // add the error, iff error, throw error else res with the token
+                }, (err, token) => {
+                    if (err) throw err;
+                    // you can grab the toke and put it into jwt.io to see what's up!
+                    res.json({token})
+                }
+                )
 
-                res.send(`user saved`)
             }
         } catch (err) {
             console.error(err.message);
